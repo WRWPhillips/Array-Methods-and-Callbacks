@@ -84,10 +84,10 @@ Use the higher-order function getWinnersByYear to do the following:
 
 hint: the strings returned need to exactly match the string in step 4.
  */
-// 4 parameters, array, getFinalscb, getYearscb, getWinnerscb, 
-function getWinnersByYear(array, getFinalsCb, getYearsCb, getWinnersCb) {
-    const winners = getWinnersCb(array, getFinalsCb);
-    const years = getYearsCb(array, getFinalsCb);
+// 4 parameters, array, getFinals, getYearscb, getWinnerscb, 
+function getWinnersByYear(array, getFinalscb, getYearscb, getWinnerscb) {
+    const winners = getWinnerscb(array, getFinalscb);
+    const years = getYearscb(array, getFinalscb);
     const winnersByYear = winners.map(function(item, index){
         return `In ${years[index]}, ${item} won the world cup!`;
     });
@@ -106,13 +106,25 @@ Use the higher order function getAverageGoals to do the following:
  Example of invocation: getAverageGoals(getFinals(fifaData));
 */
 
-function getAverageGoals(/* code here */) {
-   /* code here */
+function getAverageGoals(getFinalscb) {
+   const averageGoals = {
+       Home: 0,
+       Away: 0
+   };
 // use .reduce to add up all the goals of the home and away team
-
+   const scores = getFinalscb.reduce(function(accumulator, item){
+       return {
+           Home: accumulator.Home + item['Home Team Goals'],
+           Away: accumulator.Away + item['Away Team Goals']
+       };
+   }, averageGoals);
 // then divide that number by the length of the array
 // round to 2 decimal places- look up .toFixed()
+   let finalAverage = (scores.Home + scores.Away) / getFinalscb.length;
+   return finalAverage.toFixed(2);
 }
+
+
 
 
 
